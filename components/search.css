@@ -1,0 +1,13 @@
+.search {
+  background: lightsteelblue;
+  display: flex;
+}
+
+.search > .chakra-input {
+  border: none;
+  color: white;
+}
+
+.search > .chakra-icon {
+  align-self: center;
+}

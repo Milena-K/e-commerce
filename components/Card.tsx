@@ -1,5 +1,11 @@
 'use client'
-import { Card, CardBody, Image, Text, Divider, CardFooter, Button, ButtonGroup, Stack, Heading, } from "@chakra-ui/react"
+import {
+    Card, CardBody, Image,
+    Text, Divider, CardFooter,
+    Button, ButtonGroup, Stack, Heading,
+} from "@chakra-ui/react"
+import { itemAdded, itemRemoved, clearCart } from '../store/cartSlice'
+import { useDispatch, useSelector } from "react-redux"
 
 interface Props {
     id: number;
@@ -18,6 +24,18 @@ export const ProductCard: React.FC<Props> = ({
     category,
     image,
 }) => {
+
+    const dispatch = useDispatch()
+    const cart = useSelector(state => state.cart)
+    const product = {
+        id,
+        title,
+        price,
+        description,
+        category,
+        image,
+    }
+
     return (
         <Card maxW='sm'>
             <CardBody>
@@ -40,7 +58,11 @@ export const ProductCard: React.FC<Props> = ({
                     <Button variant='solid' colorScheme='blue'>
                         Buy now
                     </Button>
-                    <Button variant='ghost' colorScheme='blue'>
+                    <Button
+                        onClick={() => dispatch(itemAdded(product))}
+                        aria-label="Add to cart"
+                        variant='ghost'
+                        colorScheme='blue'>
                         Add to cart
                     </Button>
                 </ButtonGroup>
