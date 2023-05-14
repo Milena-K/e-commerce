@@ -2,10 +2,11 @@
 import {
     Card, CardBody, Image,
     Text, Divider, CardFooter,
-    Button, ButtonGroup, Stack, Heading,
+    Button, ButtonGroup, Stack, Heading, Icon, Box, Spacer, Flex, Center, Tooltip,
 } from "@chakra-ui/react"
 import { itemAdded, itemRemoved, clearCart } from '../store/cartSlice'
 import { useDispatch, useSelector } from "react-redux"
+import { AddIcon } from "@chakra-ui/icons";
 
 interface Props {
     id: number;
@@ -44,29 +45,30 @@ export const ProductCard: React.FC<Props> = ({
                     alt='Green double couch with wooden legs'
                     borderRadius='lg'
                 />
-                <Stack mt='6' spacing='3'>
-                    <Heading size='md'>{title}</Heading>
-                    <Text>{description}</Text>
-                    <Text color='blue.600' fontSize='2xl'>
-                        {price}
-                    </Text>
-                </Stack>
             </CardBody>
             <Divider />
-            <CardFooter>
-                <ButtonGroup spacing='2'>
-                    <Button variant='solid' colorScheme='blue'>
-                        Buy now
-                    </Button>
-                    <Button
-                        onClick={() => dispatch(itemAdded(product))}
-                        aria-label="Add to cart"
-                        variant='ghost'
-                        colorScheme='blue'>
-                        Add to cart
-                    </Button>
-                </ButtonGroup>
-            </CardFooter>
+            <Box m={4} >
+                <Text fontSize='md'>{title}</Text>
+                <Flex alignItems='center'>
+                    <Box ml={2}>
+                        <Text color='blue.600' fontSize='2xl'>
+                            $ {price}
+                        </Text>
+                    </Box>
+                    <Spacer />
+                    <Box>
+                        <Tooltip label='Add to cart' fontSize='md'>
+                            <Button
+                                onClick={() => dispatch(itemAdded(product))}
+                                aria-label="Add to cart"
+                                variant='outline'
+                                colorScheme='blue'>
+                                <AddIcon />
+                            </Button>
+                        </Tooltip>
+                    </Box>
+                </Flex>
+            </Box>
         </Card>
     )
 }

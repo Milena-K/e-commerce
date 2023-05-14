@@ -1,25 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit'
 
 import cartReducer from './cartSlice'
-
-interface IProduct {
-    id: number;
-    title: string;
-    price: number;
-    description: string;
-    category: string;
-    image: string;
-}
-
-interface ICartState {
-    numberOfItems: number,
-    cart: IProduct[]
-}
-
-const initialCartState: ICartState = {
-    numberOfItems: 0,
-    cart: [],
-}
+import { apiSlice } from '@/api/apiSlice';
 
 // TODO: pass initial state of store
 // use the fake store api
@@ -27,9 +9,11 @@ const initialCartState: ICartState = {
 const store = configureStore({
     reducer: {
         // users: usersReducer
-        cart: cartReducer
+        cart: cartReducer,
+        [apiSlice.reducerPath]: apiSlice.reducer
     },
-    initialCartState,
+    middleware: getDefaultMiddleware =>
+        getDefaultMiddleware().concat(apiSlice.middleware)
 })
 
 

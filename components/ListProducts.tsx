@@ -1,45 +1,55 @@
 'use client'
 
-import { SimpleGrid } from "@chakra-ui/react"
+import { SimpleGrid, Spinner } from "@chakra-ui/react"
 import { ProductCard } from "./Card"
-import { useEffect, useState } from "react"
+// import { useEffect, useState } from "react"
+import { useGetAllProductsQuery } from "@/api/apiSlice"
+import { IProduct } from "@/ts/interfaces/product.interfaces"
+import useHasMounted from "@/hooks/useHasMounted"
 
 
 export default function ListProducts() {
-    const [products, setProducts] = useState([]);
+    // const [products, setProducts] = useState([]);
 
-    const fetchProducts = () => {
-        fetch('https://fakestoreapi.com/products?limit=5')
-            .then(res => res.json())
-            .then(res => setProducts(res))
+    const {
+        data: products,
+        isLoading,
+        isSuccess,
+        isError,
+        error
+    } = useGetAllProductsQuery();
+
+
+    const hasMounted = useHasMounted();
+
+    if (!hasMounted) {
+        return null;
     }
 
-    useEffect(() => {
-        fetchProducts();
-    }, [])
+    let content;
+
+    if (isLoading) {
+        content = <Spinner color="blue" />
+    } else if (isSuccess) {
+        content = products.map(({ id, title, price, description, category, image }: IProduct) => {
+            return (
+                <ProductCard
+                    key={id}
+                    id={id}
+                    category={category}
+                    title={title}
+                    price={price}
+                    description={description}
+                    image={image}
+                />)
+        })
+    } else if (isError) {
+        content = <div>{error.toString()}</div>
+    }
 
     return (
-        <SimpleGrid
-            columns={4}
-            spacing={4}
-        >
-
-            {
-                products.map(({ id, title, price, description, category, image }) => {
-                    return (
-                        <ProductCard
-                            key={id}
-                            id={id}
-                            category={category}
-                            title={title}
-                            price={price}
-                            description={description}
-                            image={image}
-                        />
-                    )
-                })
-            }
-
+        <SimpleGrid columns={{ sm: 2, md: 3, lg: 6 }} spacing={4}>
+            {content}
         </SimpleGrid>
     )
 }
