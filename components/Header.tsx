@@ -1,38 +1,40 @@
 "use client";
-import { Box, Divider } from "@chakra-ui/react";
+import { Box, Button, Divider, Flex, Center } from "@chakra-ui/react";
 import Search from "./Search";
 import Link from "next/link";
 import useHasMounted from "@/hooks/useHasMounted";
 import { useGetAllCategoriesQuery } from "@/api/apiSlice";
 
-/*
- * "electronics",
-            "jewelery",
-            "men's clothing",
-            "women's clothing"
- */
-
 export default function Header() {
-  const hasMounted = useHasMounted()
-  const {
-    data: categories,
-    isSuccess,
-  } = useGetAllCategoriesQuery()
+    const hasMounted = useHasMounted()
+    const {
+        data: categories,
+        isSuccess,
+    } = useGetAllCategoriesQuery()
 
-  if (!hasMounted) return null;
+    if (!hasMounted) return null;
 
-  return (
-    <Box>
-      <Search />
-      <Divider />
-      <Box>
-        {
-          isSuccess && categories.map((category: string) => {
-            return (<Link href="/"> {category}</Link>)
-          })
+    return (
+        <Box>
+            <Center my='2'>
+                <Search />
+            </Center>
+            <Divider />
 
-        }
-      </Box>
-    </Box >
-  );
+            <Center >
+                {
+                    isSuccess && categories.map((category: string) => {
+                        return (
+                            <Link href="/">
+                                <Button variant='ghost'>
+                                    {category}
+                                </Button>
+                            </Link>
+                        )
+                    })
+
+                }
+            </Center>
+        </Box >
+    );
 }
