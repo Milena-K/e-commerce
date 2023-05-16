@@ -1,40 +1,37 @@
 "use client";
-import { Box, Button, Divider, Flex, Center } from "@chakra-ui/react";
+import { Box, Button, Divider, Center } from "@chakra-ui/react";
 import Search from "./Search";
-import Link from "next/link";
-import useHasMounted from "@/hooks/useHasMounted";
 import { useGetAllCategoriesQuery } from "@/api/apiSlice";
+import { useDispatch } from "react-redux";
+import { showCategory } from "@/store/productsSlice";
 
 export default function Header() {
-    const hasMounted = useHasMounted()
-    const {
-        data: categories,
-        isSuccess,
-    } = useGetAllCategoriesQuery()
+  const {
+    data: categories,
+    isSuccess,
+  } = useGetAllCategoriesQuery()
 
-    if (!hasMounted) return null;
+  const dispatch = useDispatch()
 
-    return (
-        <Box>
-            <Center my='2'>
-                <Search />
-            </Center>
-            <Divider />
+  return (
+    <Box>
+      <Center my='2'>
+        <Search />
+      </Center>
+      <Divider />
 
-            <Center >
-                {
-                    isSuccess && categories.map((category: string) => {
-                        return (
-                            <Link href="/">
-                                <Button variant='ghost'>
-                                    {category}
-                                </Button>
-                            </Link>
-                        )
-                    })
+      <Center >
+        {
+          isSuccess && categories.map((category: string) => {
+            return (
+              <Button key={category} variant='ghost' onClick={() => dispatch(showCategory(category))}>
+                {category}
+              </Button>
+            )
+          })
 
-                }
-            </Center>
-        </Box >
-    );
+        }
+      </Center>
+    </Box >
+  );
 }

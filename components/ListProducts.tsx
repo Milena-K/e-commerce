@@ -1,15 +1,23 @@
 'use client'
-
 import { SimpleGrid, Spinner } from "@chakra-ui/react"
 import { ProductCard } from "./Card"
-// import { useEffect, useState } from "react"
-import { useGetAllProductsQuery } from "@/api/apiSlice"
+import { useGetAllProductsQuery, useGetProductsInCategoryQuery } from "@/api/apiSlice"
 import { IProduct } from "@/ts/interfaces/product.interfaces"
-import useHasMounted from "@/hooks/useHasMounted"
-
+import { useSelector } from "react-redux"
+import { useEffect } from "react"
 
 export default function ListProducts() {
-    // const [products, setProducts] = useState([]);
+
+    // TODO: show products based od category
+    const showCategory = useSelector((state) => state.products.showCategory)
+
+    let productsQueryResult;
+
+    if (showCategory == 'all') {
+        productsQueryResult = useGetAllProductsQuery();
+    } else {
+        productsQueryResult = useGetProductsInCategoryQuery(showCategory);
+    }
 
     const {
         data: products,
@@ -17,17 +25,10 @@ export default function ListProducts() {
         isSuccess,
         isError,
         error
-    } = useGetAllProductsQuery();
+    } = productsQueryResult
 
-
-    const hasMounted = useHasMounted();
-
-    if (!hasMounted) {
-        return null;
-    }
 
     let content;
-
     if (isLoading) {
         content = <Spinner color="blue" />
     } else if (isSuccess) {

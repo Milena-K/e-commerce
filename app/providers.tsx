@@ -1,8 +1,9 @@
 'use client'
-
 import { ChakraProvider } from '@chakra-ui/react'
 import { Provider } from 'react-redux'
 import store from '../store/store'
+import Home from "@/components/Home"
+
 
 export function Providers({
     children
@@ -14,6 +15,6 @@ export function Providers({
             <Provider store={store}>
                 {children}
             </Provider>
-        </ChakraProvider >
+        </ChakraProvider>
     )
 }

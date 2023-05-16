@@ -1,14 +1,26 @@
 import { IProduct } from "@/ts/interfaces/product.interfaces";
-import { PayloadAction, createSlice } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 
-const initialState: IProduct[] = []
+interface IInitialState {
+    showCategory: string,
+    products: IProduct[]
+}
+
+let initialState: IInitialState = {
+    showCategory: 'all',
+    products: [],
+}
 
 const productsSlice = createSlice({
     name: "products",
     initialState,
     reducers: {
-        getProduct: (state, action: PayloadAction<IProduct>) => {
-
+        showCategory(state, action) {
+            const category = action.payload
+            state.showCategory = category
         }
-    }
+    },
 })
+
+export default productsSlice.reducer
+export const { showCategory } = productsSlice.actions
