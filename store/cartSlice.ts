@@ -16,9 +16,10 @@ export const cartSlice = createSlice({
             state.cart.push(action.payload)
         },
         itemRemoved: (state, action) => {
-            state.numberOfItems -= 1
-            const index = state.cart.indexOf(action.payload)
-            if (index < -1) {
+            const itemRemove: IProduct = action.payload
+            const index = state.cart.map(item => item.id).indexOf(itemRemove.id)
+            if (index > -1) {
+                state.numberOfItems -= 1
                 state.cart.splice(index, 1)
             }
         },

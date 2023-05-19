@@ -4,12 +4,15 @@ import { ProductCard } from "./Card"
 import { useGetAllProductsQuery, useGetProductsInCategoryQuery } from "@/api/apiSlice"
 import { IProduct } from "@/ts/interfaces/product.interfaces"
 import { useSelector } from "react-redux"
-import { useEffect } from "react"
+import { useContext, useEffect, useMemo } from "react"
+import { SearchContext } from "@/app/providers"
+
 
 export default function ListProducts() {
 
     // TODO: show products based od category
     const showCategory = useSelector((state) => state.products.showCategory)
+    const searcFilter = useContext(SearchContext)
 
     let productsQueryResult;
 
@@ -19,20 +22,25 @@ export default function ListProducts() {
         productsQueryResult = useGetProductsInCategoryQuery(showCategory);
     }
 
+
+
     const {
-        data: products,
+        data,
         isLoading,
         isSuccess,
         isError,
         error
     } = productsQueryResult
 
+    const products: IProduct[] = data
+
 
     let content;
     if (isLoading) {
         content = <Spinner color="blue" />
     } else if (isSuccess) {
-        content = products.map(({ id, title, price, description, category, image }: IProduct) => {
+        const filteredProducts = products.filter((prod: IProduct) => prod.title.toLowerCase().startsWith(searcFilter.filter.toLowerCase()))
+        content = filteredProducts.map(({ id, title, price, description, category, image }: IProduct) => {
             return (
                 <ProductCard
                     key={id}
