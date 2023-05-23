@@ -5,7 +5,7 @@ export const apiSlice = createApi({
     reducerPath: 'api',
     baseQuery: fetchBaseQuery({ baseUrl: 'https://fakestoreapi.com' }),
     endpoints: builder => ({
-        getAllProducts: builder.query<IProduct[]>({
+        getAllProducts: builder.query<IProduct[], void>({
             query: () => '/products'
         }),
         getNumberOfProducts: builder.query<IProduct[], number>({
@@ -14,7 +14,7 @@ export const apiSlice = createApi({
         getSingleProduct: builder.query<IProduct, number>({
             query: (id) => `/products/${id}`
         }),
-        getAllCategories: builder.query<IProduct[]>({
+        getAllCategories: builder.query<string[], void>({
             query: () => '/products/categories'
         }),
         getProductsInCategory: builder.query<IProduct[], string>({

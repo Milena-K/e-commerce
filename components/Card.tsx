@@ -4,9 +4,12 @@ import {
     Text, Divider, CardFooter,
     Button, ButtonGroup, Stack, Heading, Icon, Box, Spacer, Flex, Center, Tooltip,
 } from "@chakra-ui/react"
-import { itemAdded, itemRemoved, clearCart } from '../store/cartSlice'
+import { itemAdded, itemRemoved } from '../store/cartSlice'
 import { useDispatch, useSelector } from "react-redux"
 import { AddIcon } from "@chakra-ui/icons";
+import { ICartState } from "@/ts/interfaces/cart.interfaces";
+import { StateFromReducersMapObject } from "@reduxjs/toolkit";
+import { RootState } from "@/store/store";
 
 interface Props {
     id: number;
@@ -27,7 +30,7 @@ export const ProductCard: React.FC<Props> = ({
 }) => {
 
     const dispatch = useDispatch()
-    const cart = useSelector(state => state.cart)
+    const cart = useSelector((state: RootState) => state.cart)
     const product = {
         id,
         title,

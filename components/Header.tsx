@@ -35,7 +35,7 @@ export default function Header() {
           all
         </Button>
         {
-          isSuccess && categories.map((category: string) => {
+          isSuccess && categories.map(category => {
             return (
               <Button key={category} variant='ghost' onClick={() => dispatch(showCategory(category))}>
                 {category}
