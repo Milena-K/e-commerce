@@ -12,7 +12,7 @@ import {
     DrawerCloseButton,
 } from '@chakra-ui/react'
 import { IProduct } from '@/ts/interfaces/product.interfaces'
-import store from '@/store/store'
+import store, { RootState } from '@/store/store'
 import { useDispatch, useSelector } from 'react-redux'
 import CartItem from './CartItem'
 import { emptyCart } from '@/store/cartSlice'
@@ -20,8 +20,8 @@ import { emptyCart } from '@/store/cartSlice'
 
 const Cart = () => {
     const { isOpen, onOpen, onClose } = useDisclosure()
-    const btnRef = useRef()
-    const cartItems = useSelector(state => state.cart)
+    const btnRef = useRef<HTMLButtonElement>(null)
+    const cartItems = useSelector((state: RootState) => state.cart)
     const dispatch = useDispatch()
 
 
